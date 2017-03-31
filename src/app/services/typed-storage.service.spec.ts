@@ -120,6 +120,18 @@ describe('TypedStorageService', () => {
         expect(o.one).toBe(o2["one"]);
         expect(o.two).toBe(o2["two"]);
     }));
+    it('get/set mappable types with typed keys.', inject([TypedStorageService], (typedStorage: ITypedStorageService) => {
+        class Mine {
+            one: string = "one";
+            get two(): string { return this.one; }
+        }
+        let key = new TypedStorageKey<Mine>(Mine, "one");
+        typedStorage._config.viewModels = { "Mine" : Mine };
+        typedStorage.setItem(key, new Mine());
+        let o = typedStorage.getItem(key);
+        expect(o.one).toBe("one");
+        expect(o.two).toBe("one");
+    }));
     it('remove complex types with string keys.', inject([TypedStorageService], (typedStorage: ITypedStorageService) => {
         let key = new TypedStorageKey<Object>(Object, "one");
         let o = { "one": 1, "two": 2 };
