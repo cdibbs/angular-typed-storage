@@ -1,5 +1,7 @@
 {
-  "name": "typed-storage",
+  "name": "angular-typed-storage",
+  "description": "Angular 2+ typed Storage implementation.",
+  "repository": "https://github.com/cdibbs/angular-typed-storage.git",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -8,7 +10,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "coverage": "ng test --code-coverage --single-run",
+    "postcoverage": "codecov -f coverage/*.json"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +33,7 @@
     "@angular/compiler-cli": "^4.0.0",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.60",
+    "codecov": "^2.1.0",
     "codelyzer": "~2.0.0",
     "jasmine-core": "~2.5.2",
     "jasmine-spec-reporter": "~3.2.0",

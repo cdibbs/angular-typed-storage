@@ -1,7 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SimpleMapperModule } from 'simple-mapper';
-import { TypedStorage } from './services/typed-storage.service';
+import { TypedStorageService } from './services/typed-storage.service';
+import { typedStorageFactory } from './services/typed-storage-factory';
 import { IConfig } from './services/i';
 
 export * from './services/typed-storage.service';
@@ -21,9 +22,8 @@ export class TypedStorageModule {
     return {
       ngModule: TypedStorageModule,
       providers: [
-        TypedStorage,
-        { provide: TypedStorage, useClass: TypedStorage },
-        //{ provide: MapperConfiguration, useValue: config }
+        TypedStorageService,
+        { provide: TypedStorageService, useFactory: typedStorageFactory, deps: [config] }
       ]
     };
   }

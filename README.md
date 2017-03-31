@@ -1,31 +1,77 @@
-[![Build Status](https://travis-ci.org/cdibbs/simple-mapper.svg?branch=master)](https://travis-ci.org/cdibbs/simple-mapper)
+[![npm version](https://badge.fury.io/js/angular-typed-storage.svg)](https://badge.fury.io/js/angular-typed-storage)
+[![Build Status](https://travis-ci.org/cdibbs/angular-typed-storage.svg?branch=master)](https://travis-ci.org/cdibbs/angular-typed-storage)
+[![dependencies Status](https://david-dm.org/cdibbs/angular-typed-storage/status.svg)](https://david-dm.org/cdibbs/angular-typed-storage)
+[![devDependencies Status](https://david-dm.org/cdibbs/angular-typed-storage/dev-status.svg)](https://david-dm.org/cdibbs/angular-typed-storage?type=dev)
+[![codecov](https://codecov.io/gh/cdibbs/angular-typed-storage/branch/master/graph/badge.svg)](https://codecov.io/gh/cdibbs/angular-typed-storage)
 
-# SimpleMapper
-Angular 4+ SimpleMapper provides object-to-object mapping. It can be used to map objects of any type,
-though the original intention was to provide a way to recursively map simple JSON objects into nested
-view models (thereby gaining the benefit of any view model methods, etc).
+# TypedStorage
+The Angular 2 & 4 TypedStorage module provides an easy way to store and retrieve recursively-defined
+view models from browser storage (either localStorage or sessionStorage).
 
 ## What it is not
-SimpleMapper is not a full-fledge mapper in the way of, for example, .NET's Automapper. There are no
-mapping profiles, and options are limited.
+Functionally, it is not a total substitute for localStorage or sessionStorage when using dictionary-style references.
+
+Will work:
+```typescript
+localStorage["mykey"] = 653;
+// browser refresh...
+let someValue = localStorage["mykey"];
+// someValue == "314"
+```
+
+Will also work:
+```typescript
+typedStorage.setItem("mykey", 653);
+// browser refresh...
+let someValue = typedStorage.getItem("mykey");
+// someValue == "314"
+```
+
+Will NOT work:
+```typescript
+typedStorage["mykey"] = 653;
+// browser refresh...
+let someValue = typedStorage["mykey"];
+// someValue == undefined
+```
+
+## Features
+- It implements the Storage interface:
+```typescript
+let s: Storage = localStorage;
+s = sessionStorage;
+s = typedStorage;
+```
+- Allows optional namespacing in the underlying storage provider to avoid key collisions with
+  other modules used by your application.
+- Can use either string keys or instances of TypedStorageKey<T> for better type safety.
 
 ## Usage
 
 ```typescript
-let myClassVm = mapper.MapJsonToVM(MyClass, { /* JSON object */ }, true);
-let myClassVmArray = mapper.MapJsonToVMArray(MyClass, [{ /* JSON object array */ }], false);
+// This presumes TypedStorage was configured with namespace com.example.myapp and localStorage:
+let myKey = new TypedStorageKey(MyClass, "myInst");
+let myInst: MyClass = new MyClass();
+typedStorage.setItem(myKey, myInst);
+typedStorage[myKey] = myInst; // WILL NOT work, at present. Could work with future versions of Javascript.
+// localStorage now contains key "com.example.myapp.myInst" with a JSON-serialized representation of myInst.
+
+// ...
+
+myInst = typedStorage.getItem(myKey);
+// or
+myInst = typedStorage[myKey];
+typedStorage.removeItem(myKey);
 ```
 
-The optional third argument turns on (default) or off warnings about missing destination properties.
-
 ## View Models
-Due to the way Typescript works (as of v2.2), you should define your view models so they always have
-default values. Otherwise, their properties will not be visible to the mapper:
+Uses [SimpleMapper](https://github.com/cdibbs/angular-typed-storage) to handle recursively mapping deserialized objects back into their original view models. Nested models that you want mapped should use SimpleMapper's
+@mappable attribute.
 
 ```typescript 
 export class MyWidget {
-    Id: number; /* not visible to the mapper. */
-    Name: string = null; /* visible due to null default. */
+    Id: number = 0;
+    Name: string = null;
     get Display(): string { 
         return `${Name} (Id: ${Id})`;
     }
@@ -35,28 +81,16 @@ export class MyWidget {
 }
 ```
 
-If a source property exists while a destination does not, a warning will be issued by default.
-You can turn this off by providing a third parameter:
-
-```typescript
-let json = {
-    Id: 314,
-    Name: "Chris",
-    ExtraProp: "Fidgeting with digits"
-};
-mapper.MapJsonToVM(MyWidget, json, false);
-```
-
 ## Installation
 
-Run `npm install --save-dev simple-mapper` inside of an Angular 4 project.
+Run `npm install --save-dev typed-storage` inside of an Angular 4 project.
 
 ## Setup
 Inside your application's app.module.ts file, make the following additions.
 
 ```typescript
 // ...
-import { SimpleMapper } from 'simple-mapper';
+import { TypedStorage } from 'typed-storage';
 
 // ...
 import * as vm from './view-models';
@@ -67,7 +101,7 @@ import * as vm from './view-models';
     ],
     imports: [
         // ...
-        SimpleMapper.forRoot({viewModels: vm, logger: console})
+        TypedStorage.forRoot({viewModels: vm, ns: "com.example.app", logger: console})
     ]
 })
 export class AppModule {
