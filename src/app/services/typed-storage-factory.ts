@@ -4,9 +4,13 @@ import { TypedStorageService } from './typed-storage.service';
 import { TypedStorageInfo } from './typed-storage-info';
 import { IConfig, ILogService, ITypedStorageService } from './i';
 
-export function typedStorageFactory(config: IConfig = {}, mapper: IMapperService): ITypedStorageService {
+export function typedStorageFactory(config: IConfig = {}, mapper: IMapperService, ProxyClass = undefined): ITypedStorageService {
+    if (ProxyClass === undefined && typeof Proxy !== "undefined") {
+        ProxyClass = Proxy;
+    }
+
     let log: ILogService = (config && config.logger) || console;
-    if (typeof Proxy !== "undefined" || ! config.noProxy) {
+    if (typeof ProxyClass === "function" && ! config.noProxy) {
         let handler: ProxyHandler<TypedStorageService> = {
             set: function(target, prop, value, receiver) {
                 target.setItem(prop.toString(), value);
@@ -24,8 +28,8 @@ export function typedStorageFactory(config: IConfig = {}, mapper: IMapperService
             }
         };
         //TypedStorageService.prototype = <TypedStorageService>new Proxy({}, handler);
-        return new Proxy(new TypedStorageService(config, mapper), handler);
-    } else if (typeof Proxy === "undefined") {
+        return new ProxyClass(new TypedStorageService(config, mapper), handler);
+    } else if (! config.noProxy) {
         // Proxy class is only available in reasonably modern browsers.
         log.warn("TypedStorage: Proxy doesn't seem available (are you using IE?). Be sure to use getItem, setItem instead of indexer typedStorage[prop]. Set config.noProxy to clear this message.");
     }

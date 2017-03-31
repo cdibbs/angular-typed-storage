@@ -7,7 +7,6 @@ import { SimpleMapperModule, IMapperService, MapperService } from 'simple-mapper
 import { MockStorage } from './mock/mock.storage';
 import { TypedStorageService, TypedStorageConfigToken } from './typed-storage.service';
 import { TypedStorageKey } from './typed-storage-key';
-import * as vm from '../test-resources/view-models';
 import { IConfig, ITypedStorageService } from './i';
 
 describe('TypedStorageService', () => {
@@ -15,11 +14,11 @@ describe('TypedStorageService', () => {
         let config = <IConfig>{
             logger: console,
             ns: "com.example.typedstorage",
-            viewModels: vm
+            viewModels: []
         };
         TestBed.configureTestingModule({
             imports: [
-                SimpleMapperModule.forRoot({ viewModels: vm })
+                SimpleMapperModule.forRoot({ viewModels: [] })
             ],
             providers: [
                 TypedStorageService,
@@ -30,7 +29,7 @@ describe('TypedStorageService', () => {
                         return <IConfig>{
                             logger: console,
                             ns: "com.example.typedstorage",
-                            viewModels: vm,
+                            viewModels: [],
                             storage: new MockStorage(o)
                         };
                     }
@@ -150,7 +149,6 @@ describe('TypedStorageService', () => {
         typedStorage.removeItem(key2);
         expect(typedStorage.length).toBe(1);
         typedStorage.clear();
-        console.log("here", typedStorage.key(0));
         expect(typedStorage.length).toBe(0);
     }));
     it('keys returns each key sans namespace.', inject([TypedStorageService, "Object"], (typedStorage: ITypedStorageService, o) => {
@@ -158,7 +156,6 @@ describe('TypedStorageService', () => {
         let key2 = "test";
         typedStorage.setItem(key, 1);
         typedStorage.setItem(key2, "one");
-        console.log(o);
         expect(typedStorage.key(0)).toBe("one");
         expect(typedStorage.key(1)).toBe("test");
     }));
