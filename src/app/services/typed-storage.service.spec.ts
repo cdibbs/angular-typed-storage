@@ -151,9 +151,18 @@ describe('TypedStorageService', () => {
         typedStorage.clear();
         expect(typedStorage.length).toBe(0);
     }));
-    it('keys returns each key sans namespace.', inject([TypedStorageService, "Object"], (typedStorage: ITypedStorageService, o) => {
+    it('key returns user key with namespace.', inject([TypedStorageService, "Object"], (typedStorage: ITypedStorageService, o) => {
         let key = new TypedStorageKey<Number>(Number, "one");
         let key2 = "test";
+        typedStorage.setItem(key, 1);
+        typedStorage.setItem(key2, "one");
+        expect(typedStorage.key(0)).toBe("one");
+        expect(typedStorage.key(1)).toBe("test");
+    }));
+    it('key returns user key without namespace.', inject([TypedStorageService, "Object"], (typedStorage: ITypedStorageService, o) => {
+        let key = new TypedStorageKey<Number>(Number, "one");
+        let key2 = "test";
+        typedStorage._config.ns = null;
         typedStorage.setItem(key, 1);
         typedStorage.setItem(key2, "one");
         expect(typedStorage.key(0)).toBe("one");

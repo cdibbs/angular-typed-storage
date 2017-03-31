@@ -35,6 +35,12 @@ describe('TypedStorageFactory', () => {
     expect(s["one"]).toBe(s.getItem("one"));
     expect(s.getItem("one")).toBe("two");
   }));
+  it('should pass prop access through to typedStorage instance when unrecognized key type (browser internals).', inject([MapperService], (mapper: IMapperService) => {
+    let sym = Symbol("foo");
+    let o = { sym: "two" };
+    let s = typedStorageFactory({ storage: new MockStorage(o) }, mapper);
+    expect(s[sym]).toBeUndefined();
+  }));
   it('should pass prop delete through to removeItem.', inject([MapperService], (mapper: IMapperService) => {
     let o = {};
     let s = typedStorageFactory({ storage: new MockStorage(o) }, mapper);
