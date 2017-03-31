@@ -53,7 +53,7 @@ s = typedStorage;
 let myKey = new TypedStorageKey(MyClass, "myInst");
 let myInst: MyClass = new MyClass();
 typedStorage.setItem(myKey, myInst);
-typedStorage[myKey] = myInst; // WILL NOT work, at present. Could work with future versions of Javascript.
+typedStorage[myKey] = myInst; // property access will only work in modern browsers.
 // localStorage now contains key "com.example.myapp.myInst" with a JSON-serialized representation of myInst.
 
 // ...
@@ -65,8 +65,7 @@ typedStorage.removeItem(myKey);
 ```
 
 ## View Models
-Uses [SimpleMapper](https://github.com/cdibbs/angular-typed-storage) to handle recursively mapping deserialized objects back into their original view models. Nested models that you want mapped should use SimpleMapper's
-@mappable attribute.
+Uses [SimpleMapper](https://github.com/cdibbs/simple-mapper) to handle recursively mapping deserialized objects back into their original view models. Nested models that you want mapped should use SimpleMapper's @mappable attribute.
 
 ```typescript 
 export class MyWidget {
@@ -83,14 +82,14 @@ export class MyWidget {
 
 ## Installation
 
-Run `npm install --save-dev typed-storage` inside of an Angular 4 project.
+Run `npm install --save-dev angular-typed-storage` inside of an Angular 4 project.
 
 ## Setup
 Inside your application's app.module.ts file, make the following additions.
 
 ```typescript
 // ...
-import { TypedStorage } from 'typed-storage';
+import { TypedStorage } from 'angular-typed-storage';
 
 // ...
 import * as vm from './view-models';
