@@ -9,7 +9,9 @@ The Angular 2 & 4 TypedStorage module provides an easy way to store and retrieve
 view models from browser storage (either localStorage or sessionStorage).
 
 ## What it is not
-Functionally, it is not a total substitute for localStorage or sessionStorage when using dictionary-style references.
+In some browsers like Internet Explorer, it cannot be a drop-in replacement for localStorage or sessionStorage when using
+property- or dictionary-style references (as opposed to .getItem()/.setItem). The specific
+Javascript feature we use for this is the Proxy class. See Mozilla's notes on [browser support for the Proxy class](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Browser_compatibility)), for more information.
 
 Will work:
 ```typescript
@@ -27,7 +29,7 @@ let someValue = typedStorage.getItem("mykey");
 // someValue == "314"
 ```
 
-Will NOT work:
+Will only work in modern browsers:
 ```typescript
 typedStorage["mykey"] = 653;
 // browser refresh...
@@ -85,6 +87,8 @@ export class MyWidget {
 Run `npm install --save-dev angular-typed-storage` inside of an Angular 4 project.
 
 ## Setup
+
+
 Inside your application's app.module.ts file, make the following additions.
 
 ```typescript
@@ -100,11 +104,21 @@ import * as vm from './view-models';
     ],
     imports: [
         // ...
-        TypedStorage.forRoot({viewModels: vm, ns: "com.example.app", logger: console})
+        TypedStorage.forRoot({viewModels: vm, ns: "com.example.app", storage: localStorage, logger: console})
     ]
 })
 export class AppModule {
     constructor() {
+```
+
+And in your classes where you would like to use it:
+
+```typescript
+export class MyService {
+  constructor(private typedStorage: TypedStorageService) {
+  // ...
+  }
+}
 ```
 
 ## Build
