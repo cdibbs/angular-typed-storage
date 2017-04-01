@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/cdibbs/angular-typed-storage/branch/master/graph/badge.svg)](https://codecov.io/gh/cdibbs/angular-typed-storage)
 
 # TypedStorage
-The Angular 2 & 4 TypedStorage module provides an easy way to store and retrieve recursively-defined
+The Angular 2 & 4 TypedStorage module provides an easy way to store and retrieve nested
 view models from browser storage (either localStorage or sessionStorage).
 
 ## What it is not

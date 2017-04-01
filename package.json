@@ -2,7 +2,7 @@
   "name": "angular-typed-storage",
   "description": "Angular 2+ typed Storage implementation.",
   "repository": "https://github.com/cdibbs/angular-typed-storage.git",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
