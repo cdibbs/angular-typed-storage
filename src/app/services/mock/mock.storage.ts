@@ -7,7 +7,7 @@ export class MockStorage implements Storage {
     }
 
     public setItem<T>(key: string, value: any): void {
-        this.s[key] = value;
+        this.s[key] = value.toString();
     }
 
     public removeItem<T>(key: string): void {

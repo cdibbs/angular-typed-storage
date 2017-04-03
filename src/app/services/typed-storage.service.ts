@@ -15,11 +15,14 @@ export class TypedStorageService implements Storage, ITypedStorageService {
     private reserved: string[] = ["getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "vms", "mapper", "_config", "formattedKey"];
     private get storage(): Storage { return this._config.storage || localStorage; }
     private get vms(): { [key: string]: any } { return this._config.viewModels || {} }
+    private primitives: { [key: string]: Function } = {};
 
     constructor(
         @Inject(TypedStorageConfigToken) protected _config: IConfig,
         @Inject(MapperServiceToken) protected mapper: IMapperService)
     {
+        this.primitives["Number"] = (i: string) => JSON.parse(i);
+        this.primitives["Date"] = (i: string) => new Date(i);
     }
 
     public get namespace(): string { return this._config.ns; };
@@ -34,10 +37,21 @@ export class TypedStorageService implements Storage, ITypedStorageService {
         try {
             let stored: any = JSON.parse(json);            
             let info: TypedStorageInfo<T> = this.mapper.MapJsonToVM(TypedStorageInfo, stored);
-            if (! this.vms[info.viewModelName]) {
+            let model: { new(): T };
+            if (typeof key !== 'string' && typeof key.type !== 'string') {
+                model = key.type;
+            } else if (this.vms[info.viewModelName]) {
+                model = this.vms[info.viewModelName];
+            } else {
                 return info.viewModel;
             }
-            let obj: T = this.mapper.MapJsonToVM<T>(this.vms[info.viewModelName], info.viewModel);
+
+            let obj: T;
+            if (! this.primitives[model.name]) {
+                obj = this.mapper.MapJsonToVM<T>(model, info.viewModel);
+            } else {
+                obj = this.primitives[model.name](info.viewModel);
+            }
             return obj;
         } catch(err) {
             return null;
@@ -54,7 +68,11 @@ export class TypedStorageService implements Storage, ITypedStorageService {
         let info = new TypedStorageInfo();
         if (key instanceof TypedStorageKey) {
             info.viewModel = value;
-            info.viewModelName = key.type.prototype.constructor.name;
+            if (typeof key.type !== 'string') {
+                info.viewModelName = (<{ new(): T }>key.type).prototype.constructor.name;
+            } else {
+                info.viewModelName = key.type;
+            }
         } else {
             info.viewModel = value;
             info.viewModelName = null;

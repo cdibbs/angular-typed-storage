@@ -77,7 +77,7 @@ export class MyWidget {
         return `${Name} (Id: ${Id})`;
     }
 
-    @mappable("MyWidget")
+    @mappable(MyWidget)
     Wiggy: MyWidget = null;
 }
 ```
@@ -96,7 +96,7 @@ Inside your application's app.module.ts file, make the following additions.
 import { TypedStorage } from 'angular-typed-storage';
 
 // ...
-import * as vm from './view-models';
+import * as vm from './view-models'; // optional, if using VM refs instead of name strings.
 
 @NgModule({
     declarations: [
@@ -104,19 +104,35 @@ import * as vm from './view-models';
     ],
     imports: [
         // ...
-        TypedStorage.forRoot({viewModels: vm, ns: "com.example.app", storage: localStorage, logger: console})
+        TypedStorage.forRoot({viewModels: vm /* optional */, ns: "com.example.app", storage: localStorage, logger: console})
     ]
 })
 export class AppModule {
     constructor() {
 ```
 
-And in your classes where you would like to use it:
+The view models would all be exported via `index.ts` "Barrels" (see [Angular glossary](https://angular.io/docs/ts/latest/guide/glossary.html)):
 
 ```typescript
+export * from './user-view-model.ts';
+export * from './cat-view-model.ts';
+// ...
+```
+
+And in your classes, import like this:
+
+```typescript
+import { TypedStorageService, TypedStorageKey } from 'angular-typed-storage';
+
 export class MyService {
+  private userKey: TypedStorageKey<UserViewModel> = new TypedStorageKey(UserViewModel, "user");
+
   constructor(private typedStorage: TypedStorageService) {
   // ...
+  }
+
+  ngOnInit() {
+      doSomething(this.typedStorage.getItem(userKey));
   }
 }
 ```
