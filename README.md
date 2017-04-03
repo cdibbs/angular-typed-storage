@@ -67,7 +67,7 @@ typedStorage.removeItem(myKey);
 ```
 
 ## View Models
-Uses [SimpleMapper](https://github.com/cdibbs/simple-mapper) to handle recursively mapping deserialized objects back into their original view models. Nested models that you want mapped should use SimpleMapper's @mappable attribute.
+We use [SimpleMapper](https://github.com/cdibbs/simple-mapper) to handle recursively mapping deserialized objects back into their original view models. Nested models that you want mapped should use SimpleMapper's @mappable attribute.
 
 ```typescript 
 export class MyWidget {
@@ -81,6 +81,10 @@ export class MyWidget {
     Wiggy: MyWidget = null;
 }
 ```
+
+*Note:* Each property must have a default value, otherwise SimpleMapper will not be able to detect the property at run-time. The Typescript,
+`Id: number;` (with no default value) compiles to return Javascript's `undefined` at run-time. Not even the property key will exist in the
+compiled Javascript.
 
 ## Installation
 
