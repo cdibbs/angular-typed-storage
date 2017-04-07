@@ -97,7 +97,7 @@ Inside your application's app.module.ts file, make the following additions.
 
 ```typescript
 // ...
-import { TypedStorage } from 'angular-typed-storage';
+import { TypedStorageModule } from 'angular-typed-storage';
 
 // ...
 import * as vm from './view-models'; // optional, if using VM refs instead of name strings.
@@ -108,7 +108,7 @@ import * as vm from './view-models'; // optional, if using VM refs instead of na
     ],
     imports: [
         // ...
-        TypedStorage.forRoot({viewModels: vm /* optional */, ns: "com.example.app", storage: localStorage, logger: console})
+        TypedStorageModule.forRoot({ns: "com.example.app", storage: localStorage, logger: console})
     ]
 })
 export class AppModule {
