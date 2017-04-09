@@ -1,9 +1,9 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MapperService, MapperServiceToken, MapperConfiguration, IConfig as IMapperConfiguration } from 'simple-mapper';
+import { SimpleMapperModule, MapperServiceToken, IConfig as IMapperConfiguration } from 'simple-mapper';
 import { TypedStorageService, TypedStorageConfigToken } from './services/typed-storage.service';
 import { typedStorageFactory } from './services/typed-storage-factory';
-import { IConfig } from './services/i';
+import { IConfig, TypedStorageLoggerToken } from './services/i';
 
 export * from './services/typed-storage.service';
 export * from './services/typed-storage-key';
@@ -12,7 +12,8 @@ export * from './services/i';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    SimpleMapperModule.forRoot({})
   ],
   declarations: [],
   exports: []
@@ -25,8 +26,7 @@ export class TypedStorageModule {
         TypedStorageService,
         { provide: TypedStorageConfigToken, useValue: config },
         { provide: TypedStorageService, useFactory: typedStorageFactory, deps: [TypedStorageConfigToken, MapperServiceToken] },
-        { provide: MapperConfiguration, useValue: <IMapperConfiguration>{ viewModels: config.viewModels, logger: config.logger }},
-        { provide: MapperServiceToken, useClass: MapperService }
+        { provide: TypedStorageLoggerToken, useValue: console }
       ]
     };
   }

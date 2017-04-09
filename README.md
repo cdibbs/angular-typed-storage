@@ -106,13 +106,39 @@ import * as vm from './view-models'; // optional, if using VM refs instead of na
     declarations: [
         // ...
     ],
+    providers: [
+        { provide: TypedStorageLoggerToken, useValue: console /* or a logger matching console's sig */ }
+    ],
     imports: [
         // ...
-        TypedStorageModule.forRoot({ns: "com.example.app", storage: localStorage, logger: console})
+        TypedStorageModule.forRoot({ns: "com.example.app", storage: localStorage })
     ]
 })
 export class AppModule {
     constructor() {
+```
+
+## Options
+```typescript
+let config: IConfig = {
+    /** Deprecated. This defaults to console. Please use TypedStorageLoggerToken in your providers, instead. */
+    logger: undefined,
+
+    /** The namespace to use, i.e., com.example.myapp. Default: null = do not use namespace. */
+    ns: "com.example.myapp",
+
+    /** The dictionary of view models to use for recursive mapping, if any. Default: empty.*/
+    viewModels: {},
+
+    /**
+     * Whether or not to use Proxy to facilitate indexer access to typed storage, i.e., typedStorage[myprop] == typedStorage.getItem(myprop).
+     * Proxy does not exist in some older browsers like Internet Explorer. Default: false.
+     */
+    noProxy: false,
+
+    /** Underlying storage: either localStorage or sessionStorage. Default: localStorage. */
+    storage: localStorage,
+}
 ```
 
 The view models would all be exported via `index.ts` "Barrels" (see [Angular glossary](https://angular.io/docs/ts/latest/guide/glossary.html)):

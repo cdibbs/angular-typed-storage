@@ -1,13 +1,13 @@
 import { ILogService } from './i-log.service';
 
 export interface IConfig {
-    /** This defaults to console. */
+    /** Deprecated. This defaults to console. Please use TypedStorageLoggerToken in your providers, instead. */
     logger?: ILogService;
 
-    /** The namespace to use, i.e., com.example.myapp */
+    /** The namespace to use, i.e., com.example.myapp. Default: null = do not use namespace. */
     ns?: string;
 
-    /** The dictionary of view models to use for recursive mapping. */
+    /** The dictionary of view models to use for recursive mapping, if any. Default: empty.*/
     viewModels?: { [key: string]: any };
 
     /**
@@ -16,6 +16,6 @@ export interface IConfig {
      */
     noProxy?: boolean;
 
-    /** Underlying storage: either localStorage or sessionStorage. */
+    /** Underlying storage: either localStorage or sessionStorage. Default: localStorage. */
     storage?: Storage;
 }

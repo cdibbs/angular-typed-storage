@@ -3,7 +3,7 @@ import { ClassProvider, ValueProvider } from '@angular/core';
 import { TestBed, async, inject } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 
-import { SimpleMapperModule, IMapperService, MapperService } from 'simple-mapper';
+import { SimpleMapperModule, IMapperService, MapperService, MapperLoggerToken, mappable } from 'simple-mapper';
 import { MockStorage } from './mock/mock.storage';
 import { TypedStorageService, TypedStorageConfigToken } from './typed-storage.service';
 import { TypedStorageKey } from './typed-storage-key';
@@ -14,11 +14,11 @@ describe('TypedStorageService', () => {
         let config = <IConfig>{
             logger: console,
             ns: "com.example.typedstorage",
-            viewModels: []
+            viewModels: { }
         };
         TestBed.configureTestingModule({
             imports: [
-                SimpleMapperModule.forRoot({ viewModels: [] })
+                SimpleMapperModule.forRoot({ viewModels: { }, validateOnStartup: true, noUnmappedWarnings: false })
             ],
             providers: [
                 TypedStorageService,
@@ -33,7 +33,8 @@ describe('TypedStorageService', () => {
                             storage: new MockStorage(o)
                         };
                     }
-                }
+                },
+                { provide: MapperLoggerToken, useValue: console }
             ]
         });
     });
@@ -120,7 +121,6 @@ describe('TypedStorageService', () => {
         let o = { "one": 1, "two": 2 };
         typedStorage.setItem(key, o);
         let o2 = typedStorage.getItem(key);
-        console.log(o, o2);
         expect(o2["one"]).toBe(o.one);
         expect(o2["two"]).toBe(o.two);
     }));
