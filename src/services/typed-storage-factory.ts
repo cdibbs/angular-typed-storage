@@ -17,7 +17,8 @@ export function typedStorageFactory(config: IConfig = {}, mapper: IMapperService
                 return true;
             },
             get: function(target, prop, receiver) {
-                if (typeof prop.valueOf() !== "string" && !(prop.valueOf() instanceof TypedStorageInfo)) {
+                let v:any = prop.valueOf();
+                if (typeof v !== "string" && !(v instanceof TypedStorageInfo)) {
                     return target[prop];
                 }
                 return target.getItem(prop.toString());

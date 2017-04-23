@@ -9,7 +9,7 @@ The Angular 2 & 4 TypedStorage module provides an easy way to store and retrieve
 view models from browser storage (either localStorage or sessionStorage).
 
 ## What it is not
-In some browsers like Internet Explorer, it cannot be a drop-in replacement for localStorage or sessionStorage when using
+In some browsers, such as Internet Explorer, it cannot be a drop-in replacement for localStorage or sessionStorage when using
 property- or dictionary-style references (as opposed to .getItem()/.setItem). The specific
 Javascript feature we use for this is the Proxy class. See Mozilla's notes on [browser support for the Proxy class](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Browser_compatibility)), for more information.
 
@@ -67,7 +67,8 @@ typedStorage.removeItem(myKey);
 ```
 
 ## View Models
-We use [SimpleMapper](https://github.com/cdibbs/simple-mapper) to handle recursively mapping deserialized objects back into their original view models. Nested models that you want mapped should use SimpleMapper's @mappable attribute.
+We use [SimpleMapper](https://github.com/cdibbs/simple-mapper) to recursively map deserialized objects back
+into their original view models. Nested models that you want mapped should use SimpleMapper's @mappable attribute.
 
 ```typescript 
 export class MyWidget {
@@ -169,12 +170,21 @@ export class MyService {
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Code coverage
+
+While running tests, code coverage will be available at ./coverage/chrome/html/index.html.
+
+## Documentation
+
+Run 'npm run compodoc' to generate documentation.
+Then run 'npm run compodoc-serve' to see auto-generated documentation and documentation coverage on port 8080.
 
 ## Further help
 
-To get more help on the `angular-cli` use `ng help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Feel free to post issues.

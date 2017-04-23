@@ -1,18 +1,13 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SimpleMapperModule, MapperServiceToken, IConfig as IMapperConfiguration } from 'simple-mapper';
-import { TypedStorageService, TypedStorageConfigToken } from './services/typed-storage.service';
-import { typedStorageFactory } from './services/typed-storage-factory';
-import { IConfig, TypedStorageLoggerToken } from './services/i';
 
-export * from './services/typed-storage.service';
-export * from './services/typed-storage-key';
-export * from './services/i';
-//export * from './decorators/mappable.decorator';
+import { TypedStorageService, TypedStorageConfigToken } from '../services/typed-storage.service';
+import { typedStorageFactory } from '../services/typed-storage-factory';
+import { IConfig, TypedStorageLoggerToken } from '../services/i';
 
 @NgModule({
   imports: [
-    CommonModule,
     SimpleMapperModule.forRoot({})
   ],
   declarations: [],

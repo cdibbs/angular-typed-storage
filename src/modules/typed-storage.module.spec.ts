@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 import { SimpleMapperModule } from 'simple-mapper';
 
 import { TypedStorageModule } from './typed-storage.module';
-import { TypedStorageService } from './services/typed-storage.service';
-import { IConfig, TypedStorageLoggerToken, ILogService } from './services/i';
+import { TypedStorageService } from '../services/typed-storage.service';
+import { IConfig, TypedStorageLoggerToken, ILogService } from '../services/i';
 
 describe('TypedStorageModule without user logger', () => {
     beforeEach(() => {
@@ -34,10 +34,10 @@ describe('TypedStorageModule without user logger', () => {
 
 describe('TypedStorageModule with user logger', () => {
     class MockConsole {
-        error(message?: any, ...optional: any[]): void { }
-        log(message?: any, ...optional: any[]): void { }
-        warn(message?: any, ...optional: any[]): void { }
-        info(message?: any, ...optional: any[]): void { }
+        public error(message?: any, ...optional: any[]): void { }
+        public log(message?: any, ...optional: any[]): void { }
+        public warn(message?: any, ...optional: any[]): void { }
+        public info(message?: any, ...optional: any[]): void { }
     }
     let mockCon = new MockConsole();
     beforeEach(() => {
