@@ -56,6 +56,8 @@ rm(`-Rf`, `${NPM_DIR}/*.js.map`);
 rm(`-Rf`, `${NPM_DIR}/src/**/*.js`);
 rm(`-Rf`, `${NPM_DIR}/src/**/*.js.map`);
 
+mv('-f', `${BUNDLES_DIR}/${PACKAGE}.umd.js`, `${NPM_DIR}/index.js`);
+mv('-f', `${BUNDLES_DIR}/${PACKAGE}.umd.js.map`, `${NPM_DIR}/index.js.map`);
 cp(`-Rf`, [`package.json`, `LICENSE`, `README.md`], `${NPM_DIR}`);
 
 echo(chalk.green(`End building`));
