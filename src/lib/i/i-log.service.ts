@@ -1,5 +1,3 @@
-import { InjectionToken } from '@angular/core';
-
 /**
  * Don't forget - even console should work as an ILogService:
  * let logger: ILogService = console;
@@ -17,6 +15,3 @@ export interface ILogService {
   /** Use like console.info. */
   info(message?: any, ...optional: any[]): void;
 }
-
-
-export let TypedStorageLoggerToken = new InjectionToken<ILogService>("ILogService_User");

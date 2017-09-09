@@ -4,7 +4,7 @@ import { TypedStorageService } from './typed-storage.service';
 import { TypedStorageInfo } from './typed-storage-info';
 import { IConfig, ILogService, ITypedStorageService } from './i';
 
-export function typedStorageFactory(config: IConfig = {}, mapper: IMapperService, ProxyClass = undefined): ITypedStorageService {
+export function typedStorageFactory(config: IConfig = {}, mapper: IMapperService, ProxyClass: typeof Proxy = undefined): ITypedStorageService {
     if (ProxyClass === undefined && typeof Proxy !== "undefined") {
         ProxyClass = Proxy;
     }

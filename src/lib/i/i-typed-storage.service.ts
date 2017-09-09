@@ -6,6 +6,6 @@ export interface ITypedStorageService extends Storage {
     namespace: string;
 
     setItem<T>(key: TypedStorageKey<T> | string, value: T): void;
-    getItem<T>(key: TypedStorageKey<T> | string): T;
+    getItem<T>(key: string | TypedStorageKey<T>): string | T;
     removeItem<T>(key: TypedStorageKey<T> | string): void;
 }

@@ -1,61 +1,71 @@
-import { InjectionToken, Inject, Injectable } from '@angular/core';
 import { TypedStorageKey } from './typed-storage-key';
 import { TypedStorageInfo } from './typed-storage-info';
 import { ITypedStorageService, ILogService, IConfig } from './i';
-import { IMapperService, MapperServiceToken } from 'simple-mapper';
+import { IMapperService, MapperService } from 'simple-mapper';
+import { injectable, inject } from 'inversify';
+import { TypedStorageConfigToken, MapperServiceToken } from './tokens';
 
-export let TypedStorageToken = new InjectionToken<ITypedStorageService>("ITypedStorageService");
-export let TypedStorageConfigToken = new InjectionToken<ITypedStorageService>("IConfig");
-export let ViewModelCollection = new InjectionToken("ViewModelCollection");
-export let LogService = new InjectionToken<ILogService>("ILogService");
-
-@Injectable()
 export class TypedStorageService implements Storage, ITypedStorageService {
     [x: string]: any;
-    private reserved: string[] = ["getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "vms", "mapper", "_config", "formattedKey"];
-    private get storage(): Storage { return this._config.storage || localStorage; }
-    private get vms(): { [key: string]: any } { return this._config.viewModels || {} }
+    private reserved: string[] = ["models", "getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "mapper", "_config", "formattedKey"];
+    private get storage(): Storage {
+        if (this._config.storage)
+            return this._config.storage;
+
+        if (typeof localStorage !== "undefined")
+            return localStorage;
+        
+        throw new Error("No storage provider configured, and localStorage not defined.");
+    }
+    private get models(): { [key: string]: any } { return this._config.models || {} }
     private primitives: { [key: string]: Function } = {};
 
     constructor(
-        @Inject(TypedStorageConfigToken) protected _config: IConfig,
-        @Inject(MapperServiceToken) protected mapper: IMapperService)
+        protected _config: IConfig = {},
+        protected mapper: IMapperService = new MapperService())
     {
         this.primitives["Number"] = (i: string) => JSON.parse(i);
         this.primitives["Date"] = (i: string) => new Date(i);
+        this.primitives["String"] = (i: string) => i;
+        this.primitives["Boolean"] = (i: string) => i;
     }
 
     public get namespace(): string { return this._config.ns; };
 
-    public getItem<T>(key: TypedStorageKey<T> | string): T {
+    public getItem<T>(key: TypedStorageKey<T> | string): string | T {
         if (typeof key === "string" && this.reserved.indexOf(key) >= 0) {
             return this[key];
         }
 
         let k: string = this.formattedKey(key.toString());
         let json: string = this.storage.getItem(k);
-        try {
-            let stored: any = JSON.parse(json);            
-            let info: TypedStorageInfo<T> = this.mapper.MapJsonToVM(TypedStorageInfo, stored);
-            let model: { new(): T };
-            if (typeof key !== 'string' && typeof key.type !== 'string') {
-                model = key.type;
-            } else if (this.vms[info.viewModelName]) {
-                model = this.vms[info.viewModelName];
-            } else {
-                return info.viewModel;
-            }
-
-            let obj: T;
-            if (! this.primitives[model.name]) {
-                obj = this.mapper.MapJsonToVM<T>(model, info.viewModel);
-            } else {
-                obj = this.primitives[model.name](info.viewModel);
-            }
-            return obj;
-        } catch(err) {
+        if (! json) { // not found
             return null;
         }
+
+        let stored: any = JSON.parse(json);            
+        let info: TypedStorageInfo<T> = this.mapper.map(TypedStorageInfo, stored);
+        let type: { new(): T };
+        let typedKey: TypedStorageKey<T>;
+        let typeName: string;
+        if (typeof key !== 'string' && typeof key.type !== 'string') {
+            typedKey = key;
+            type = typedKey.type;
+            typeName = typedKey.typeName;
+        } else if (this.models[info.viewModelName]) {
+            type = this.models[info.viewModelName];
+            typeName = type.name;
+        } else {
+            return info.viewModel;
+        }
+
+        let obj: T;
+        if (! this.primitives[typeName]) {
+            obj = this.mapper.map<T>(type, info.viewModel);
+        } else {
+            obj = this.primitives[type.name](info.viewModel);
+        }
+        return obj;
     }
 
     public setItem<T>(key: TypedStorageKey<T> | string, value: T): void {
@@ -68,11 +78,7 @@ export class TypedStorageService implements Storage, ITypedStorageService {
         let info = new TypedStorageInfo();
         if (key instanceof TypedStorageKey) {
             info.viewModel = value;
-            if (typeof key.type !== 'string') {
-                info.viewModelName = (<{ new(): T }>key.type).prototype.constructor.name;
-            } else {
-                info.viewModelName = key.type;
-            }
+            info.viewModelName = (<{ new(): T }>key.type).prototype.constructor.name;
         } else {
             info.viewModel = value;
             info.viewModelName = null;
@@ -102,7 +108,7 @@ export class TypedStorageService implements Storage, ITypedStorageService {
         let key: string = this.storage.key(n);
         if (this._config.ns)
             return key ? key.substr(this._config.ns.length + 1) : null;
-        return key;
+        return key || null;
     }
 
     /**

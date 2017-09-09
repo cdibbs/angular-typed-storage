@@ -1,5 +1,5 @@
 // Public entities.
-export * from './services/typed-storage.service';
-export * from './services/typed-storage-key';
-export * from './services/i';
-export * from './modules/typed-storage.module';
+export * from './lib/typed-storage.service';
+export * from './lib/typed-storage-key';
+export * from './lib/typed-storage-factory';
+export * from './lib/i';

@@ -1,7 +1,0 @@
-{
-  "generator-ngx-lib": {
-    "promptValues": {
-      "gitRepositoryUrl": "https://github.com/cdibbs/angular-typed-storage"
-    }
-  }
-}

@@ -1,81 +1,82 @@
 {
-  "name": "angular-typed-storage",
-  "version": "1.3.2-beta",
+  "name": "typed-storage",
+  "version": "1.0.0-alpha",
   "description": "Angular 2+ library.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cdibbs/angular-typed-storage"
+    "url": "https://github.com/cdibbs/typed-storage"
   },
   "author": {
     "name": "Chris Dibbern",
     "email": "chrisdibbern@gmail.com"
   },
-  "main": "./bundles/angular-typed-storage.umd.js",
-  "module": "./modules/angular-typed-storage.es5.js",
-  "es2015": "./modules/angular-typed-storage.js",
+  "main": "./dist/index.js",
+  "module": "./dist/bundles/typed-storage.es5.js",
   "bugs": {
-    "url": "https://github.com/cdibbs/angular-typed-storage/issues"
+    "url": "https://github.com/cdibbs/typed-storage/issues"
   },
   "license": "MIT",
   "scripts": {
-    "build": "node build.js",
-    "test": "karma start",
-    "pack-lib": "npm pack ./dist",
-    "publish-lib": "npm publish ./dist",
-    "publish:beta": "npm publish --tag beta ./dist",
-    "compodoc": "compodoc -p tsconfig.json",
-    "compodoc-serve": "compodoc -s",
-    "transpile": "ngc -p ./tsconfig-build.json",
-    "coverage": "karma start --single-run",
-    "postcoverage": "codecov -f coverage/chrome/coverage.json"
+    "pretest": "tsc --project tsconfig-test.json",
+    "test": "alsatian test/lib/*.spec.js --tap",
+    "cover": "nyc npm test",
+    "e2e": "",
+    "build": "npm-run-all tsc webpack",
+    "webpack": "webpack",
+    "tsc": "tsc",
+    "report_coverage": "nyc report --reporter=lcov && codecov"
   },
-  "typings": "./index.d.ts",
+  "typings": "./dist/index.d.ts",
   "private": false,
-  "peerDependencies": {
-    "@angular/common": "^2.0.0",
-    "@angular/core": "^2.0.0"
-  },
-  "dependencies": {
-    "simple-mapper": "^1.4.7-beta"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@angular/common": "^4.0.0",
-    "@angular/compiler": "^4.0.2",
-    "@angular/compiler-cli": "^4.0.0",
-    "@angular/core": "^4.0.2",
-    "@angular/platform-browser": "^4.0.0",
-    "@angular/platform-browser-dynamic": "^4.0.0",
     "@compodoc/compodoc": "latest",
     "@types/jasmine": "^2.5.47",
     "@types/node": "^7.0.12",
+    "alsatian": "^2.0.0",
     "chalk": "1.1.3",
     "codecov": "^2.1.0",
     "codelyzer": "~2.1.1",
     "compodoc": "0.0.41",
     "core-js": "^2.4.1",
-    "jasmine-core": "~2.5.2",
-    "jasmine-spec-reporter": "~4.0.0",
-    "karma": "^1.5.0",
-    "karma-chrome-launcher": "~2.0.0",
-    "karma-cli": "~1.0.1",
-    "karma-coverage-istanbul-reporter": "^1.0.0",
-    "karma-jasmine": "~1.1.0",
-    "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-spec-reporter": "0.0.31",
-    "karma-typescript": "^3.0.1",
-    "karma-typescript-angular2-transform": "^1.0.0",
+    "cross-env": "^5.0.5",
+    "inversify": "^4.3.0",
+    "npm-run-all": "^4.1.1",
+    "nyc": "^11.2.1",
     "protractor": "~5.1.0",
-    "rollup": "0.41.6",
     "rxjs": "^5.1.0",
     "shelljs": "0.7.7",
+    "simple-mapper": "^1.4.7-beta",
     "sorcery": "^0.10.0",
-    "ts-helpers": "^1.1.2",
-    "ts-loader": "^2.0.3",
-    "ts-node": "^3.0.2",
     "tslint": "^5.1.0",
     "typescript": "^2.2.1",
     "uglify-js": "^2.8.15",
+    "webpack": "^3.5.5",
     "zone.js": "^0.8.4"
+  },
+  "nyc": {
+    "include": [
+      "test/lib/*.js",
+      "test/lib/**/*.js"
+    ],
+    "extension": [
+      "*.ts",
+      "*.js"
+    ],
+    "exclude": [
+      "typings",
+      "src/e2e/resources",
+      "**/*.d.ts",
+      "*.spec.ts",
+      "**/*.spec.js",
+      "**/i-*.js"
+    ],
+    "reporter": [
+      "json",
+      "html"
+    ],
+    "require": [
+      "source-map-support/register"
+    ]
   }
 }

@@ -2,15 +2,15 @@ export class MockStorage implements Storage {
     [x: string]: any;
     constructor(private s: {}) {}
 
-    public getItem<T>(key: string): T {
-        return this.s[key];
+    public getItem(key: string): string {
+        return this.s[key] ? "" + this.s[key] : null;
     }
 
-    public setItem<T>(key: string, value: any): void {
+    public setItem(key: string, value: any): void {
         this.s[key] = value.toString();
     }
 
-    public removeItem<T>(key: string): void {
+    public removeItem(key: string): void {
         delete this.s[key];
     }
 

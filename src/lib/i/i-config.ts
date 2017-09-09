@@ -8,7 +8,7 @@ export interface IConfig {
     ns?: string;
 
     /** The dictionary of view models to use for recursive mapping, if any. Default: empty.*/
-    viewModels?: { [key: string]: any };
+    models?: { [key: string]: any };
 
     /**
      * Whether or not to use Proxy to facilitate indexer access to typed storage, i.e., typedStorage[myprop] == typedStorage.getItem(myprop).
