@@ -1,10 +1,19 @@
 /* tslint:disable:no-unused-variable */
+import { Expect, Test, TestFixture, TestCase, SpyOn, Setup, Teardown } from 'alsatian';
 import { IMapperService, MapperService } from 'simple-mapper';
 
 import { MockStorage } from '../spec-lib/mock.storage';
 import { typedStorageFactory } from './typed-storage-factory';
 import { TypedStorageKey } from './typed-storage-key';
 import { IConfig } from './i';
+
+@TestFixture("TypedStorageFactory")
+export class TypedStorageFactoryTests {
+  @Test("runs")
+  public runs() {
+    Expect(typedStorageFactory({}, new MapperService())).toBeDefined();
+  }
+}
 
 /*describe('TypedStorageFactory', () => {
   beforeEach(() => {
