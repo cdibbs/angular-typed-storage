@@ -1,12 +1,14 @@
-[![npm version](https://badge.fury.io/js/angular-typed-storage.svg)](https://badge.fury.io/js/angular-typed-storage)
-[![Build Status](https://travis-ci.org/cdibbs/angular-typed-storage.svg?branch=master)](https://travis-ci.org/cdibbs/angular-typed-storage)
-[![dependencies Status](https://david-dm.org/cdibbs/angular-typed-storage/status.svg)](https://david-dm.org/cdibbs/angular-typed-storage)
-[![devDependencies Status](https://david-dm.org/cdibbs/angular-typed-storage/dev-status.svg)](https://david-dm.org/cdibbs/angular-typed-storage?type=dev)
-[![codecov](https://codecov.io/gh/cdibbs/angular-typed-storage/branch/master/graph/badge.svg)](https://codecov.io/gh/cdibbs/angular-typed-storage)
+[![npm version](https://badge.fury.io/js/typed-storage.svg)](https://badge.fury.io/js/typed-storage)
+[![Build Status](https://travis-ci.org/cdibbs/typed-storage.svg?branch=master)](https://travis-ci.org/cdibbs/typed-storage)
+[![dependencies Status](https://david-dm.org/cdibbs/typed-storage/status.svg)](https://david-dm.org/cdibbs/typed-storage)
+[![devDependencies Status](https://david-dm.org/cdibbs/typed-storage/dev-status.svg)](https://david-dm.org/cdibbs/typed-storage?type=dev)
+[![codecov](https://codecov.io/gh/cdibbs/typed-storage/branch/master/graph/badge.svg)](https://codecov.io/gh/cdibbs/typed-storage)
 
 # TypedStorage
-The Angular 2 & 4 TypedStorage module provides an easy way to store and retrieve nested
-view models from browser storage (either localStorage or sessionStorage).
+A typed wrapper for Storage implementations (localStorage or sessionStorage) that provides an easy way to store and retrieve nested
+models from browser storage.
+
+Warning: Currently under development. Not production-ready, yet.
 
 ## What it is not
 In some browsers, such as Internet Explorer, it cannot be a drop-in replacement for localStorage or sessionStorage when using
@@ -89,47 +91,23 @@ compiled Javascript.
 
 ## Installation
 
-Run `npm install --save-dev angular-typed-storage` inside of an Angular 4 project.
+For the moment, you must build from source. I hope to release this, soon.
 
 ## Setup
 
-
-Inside your application's app.module.ts file, make the following additions.
-
-```typescript
-// ...
-import { TypedStorageModule } from 'angular-typed-storage';
-
-// ...
-import * as vm from './view-models'; // optional, if using VM refs instead of name strings.
-
-@NgModule({
-    declarations: [
-        // ...
-    ],
-    providers: [
-        { provide: TypedStorageLoggerToken, useValue: console /* or a logger matching console's sig */ }
-    ],
-    imports: [
-        // ...
-        TypedStorageModule.forRoot({ns: "com.example.app", storage: localStorage })
-    ]
-})
-export class AppModule {
-    constructor() {
-```
+Coming soon.
 
 ## Options
 ```typescript
 let config: IConfig = {
-    /** Deprecated. This defaults to console. Please use TypedStorageLoggerToken in your providers, instead. */
+    /** Deprecated. This defaults to console. */
     logger: undefined,
 
     /** The namespace to use, i.e., com.example.myapp. Default: null = do not use namespace. */
     ns: "com.example.myapp",
 
-    /** The dictionary of view models to use for recursive mapping, if any. Default: empty.*/
-    viewModels: {},
+    /** The dictionary of models to use for recursive mapping, if any. Default: empty. */
+    models: {},
 
     /**
      * Whether or not to use Proxy to facilitate indexer access to typed storage, i.e., typedStorage[myprop] == typedStorage.getItem(myprop).
@@ -142,7 +120,7 @@ let config: IConfig = {
 }
 ```
 
-The view models would all be exported via `index.ts` "Barrels" (see [Angular glossary](https://angular.io/docs/ts/latest/guide/glossary.html)):
+The models would all be exported via `index.ts` "barrels".
 
 ```typescript
 export * from './user-view-model.ts';
@@ -153,7 +131,7 @@ export * from './cat-view-model.ts';
 And in your classes, import like this:
 
 ```typescript
-import { TypedStorageService, TypedStorageKey } from 'angular-typed-storage';
+import { TypedStorageService, TypedStorageKey } from 'typed-storage';
 
 export class MyService {
   private userKey: TypedStorageKey<UserViewModel> = new TypedStorageKey(UserViewModel, "user");
@@ -162,7 +140,7 @@ export class MyService {
   // ...
   }
 
-  ngOnInit() {
+  myMethod() {
       doSomething(this.typedStorage.getItem(userKey));
   }
 }
@@ -174,11 +152,12 @@ Run `npm run build` to build the project. The build artifacts will be stored in 
 
 ## Running unit tests
 
-Run `npm test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm test` or `npm run cover` to execute the unit tests or tests + coverage.
+
 
 ## Code coverage
 
-While running tests, code coverage will be available at ./coverage/chrome/html/index.html.
+While running tests, code coverage will be available at /[path/to/repo]/coverage/index.html
 
 ## Documentation
 

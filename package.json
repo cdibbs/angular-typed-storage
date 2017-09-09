@@ -1,7 +1,7 @@
 {
   "name": "typed-storage",
   "version": "1.0.0-alpha",
-  "description": "Angular 2+ library.",
+  "description": "Wrapper library for *Storage implementations that facilitates storing typed objects",
   "repository": {
     "type": "git",
     "url": "https://github.com/cdibbs/typed-storage"
