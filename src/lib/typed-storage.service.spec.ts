@@ -68,9 +68,9 @@ export class TypedStorageServiceTests {
     public shouldRejectReservedSets() {
         let reserved = ["models", "getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "mapper", "_config", "formattedKey", "primitives"];
         for (var i = 0; i < reserved.length; i++) {
-            let orig = this.tss.getItem(reserved[i]);
+            let orig = this.tss.getItem<any>(reserved[i]);
             this.tss.setItem(reserved[i], "3.14");
-            Expect(this.tss.getItem(reserved[i])).toBe(orig);
+            Expect(this.tss.getItem<any>(reserved[i])).toBe(orig);
         }
     }
 
@@ -78,9 +78,9 @@ export class TypedStorageServiceTests {
     public shouldRejectReservedRemoves() {
         let reserved = ["getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "models", "mapper", "_config", "formattedKey", "primitives"];
         for (var i = 0; i < reserved.length; i++) {
-            let orig = this.tss.getItem(reserved[i]);
+            let orig = this.tss.getItem<any>(reserved[i]);
             this.tss.removeItem(reserved[i]);
-            Expect(this.tss.getItem(reserved[i])).toBe(orig);
+            Expect(this.tss.getItem<any>(reserved[i])).toBe(orig);
         }
     }
 
@@ -95,7 +95,7 @@ export class TypedStorageServiceTests {
     public shouldRemoveWithTypedKeys() {
         let key = new TypedStorageKey<Number>(Number, "one");
         this.tss.setItem(key, 1.111);
-        Expect(this.tss.getItem("one")).toBe(1.111);
+        Expect(this.tss.getItem<number>("one")).toBe(1.111);
         this.tss.removeItem(key);
         Expect(this.tss.getItem("one")).toBe(null);
     }
@@ -104,9 +104,9 @@ export class TypedStorageServiceTests {
     public shouldRejectReservedClears() {
         let reserved = ["getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "models", "mapper", "_config", "formattedKey", "primitives"];
         for (var i = 0; i < reserved.length; i++) {
-            let orig = this.tss.getItem(reserved[i]);
+            let orig = this.tss.getItem<any>(reserved[i]);
             this.tss.clear();
-            Expect(this.tss.getItem(reserved[i])).toBe(orig);
+            Expect(this.tss.getItem<any>(reserved[i])).toBe(orig);
         }
     }
 
