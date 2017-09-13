@@ -1,7 +1,7 @@
 {
   "name": "typed-storage",
-  "version": "1.0.0-alpha",
-  "description": "Wrapper library for *Storage implementations that facilitates storing typed objects",
+  "version": "2.0.0",
+  "description": "A wrapper library for *Storage implementations that facilitates storing typed objects",
   "repository": {
     "type": "git",
     "url": "https://github.com/cdibbs/typed-storage"
@@ -10,7 +10,8 @@
     "name": "Chris Dibbern",
     "email": "chrisdibbern@gmail.com"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/index",
+  "types": "./dist/index.d.ts",
   "module": "./dist/bundles/typed-storage.es5.js",
   "bugs": {
     "url": "https://github.com/cdibbs/typed-storage/issues"
@@ -20,15 +21,20 @@
     "pretest": "tsc --project tsconfig-test.json",
     "test": "alsatian test/lib/*.spec.js --tap",
     "cover": "nyc npm test",
+    "compodoc": "compodoc -p tsconfig.json",
     "e2e": "",
     "build": "npm-run-all tsc webpack",
     "webpack": "webpack",
     "tsc": "tsc",
+    "prepublish": "npm run build",
     "report_coverage": "nyc report --reporter=lcov && codecov"
   },
   "typings": "./dist/index.d.ts",
   "private": false,
   "dependencies": {},
+  "optionalDependencies": {
+    "simple-mapper": "^2.0.0"
+  },
   "devDependencies": {
     "@compodoc/compodoc": "latest",
     "@types/jasmine": "^2.5.47",
@@ -46,7 +52,7 @@
     "protractor": "~5.1.0",
     "rxjs": "^5.1.0",
     "shelljs": "0.7.7",
-    "simple-mapper": "^1.4.7-beta",
+    "simple-mapper": "^2.0.0",
     "sorcery": "^0.10.0",
     "tslint": "^5.1.0",
     "typescript": "^2.2.1",

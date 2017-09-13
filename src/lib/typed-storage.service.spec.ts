@@ -66,7 +66,7 @@ export class TypedStorageServiceTests {
 
     @Test("Should prevent setting reserved words.")
     public shouldRejectReservedSets() {
-        let reserved = ["models", "getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "mapper", "_config", "formattedKey"];
+        let reserved = ["models", "getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "mapper", "_config", "formattedKey", "primitives"];
         for (var i = 0; i < reserved.length; i++) {
             let orig = this.tss.getItem(reserved[i]);
             this.tss.setItem(reserved[i], "3.14");
@@ -76,7 +76,7 @@ export class TypedStorageServiceTests {
 
     @Test("Should prevent removing reserved words.")
     public shouldRejectReservedRemoves() {
-        let reserved = ["getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "models", "mapper", "_config", "formattedKey"];
+        let reserved = ["getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "models", "mapper", "_config", "formattedKey", "primitives"];
         for (var i = 0; i < reserved.length; i++) {
             let orig = this.tss.getItem(reserved[i]);
             this.tss.removeItem(reserved[i]);
@@ -102,7 +102,7 @@ export class TypedStorageServiceTests {
 
     @Test("Should prevent clearing reserved words.")
     public shouldRejectReservedClears() {
-        let reserved = ["getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "models", "mapper", "_config", "formattedKey"];
+        let reserved = ["getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "models", "mapper", "_config", "formattedKey", "primitives"];
         for (var i = 0; i < reserved.length; i++) {
             let orig = this.tss.getItem(reserved[i]);
             this.tss.clear();

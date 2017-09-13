@@ -1,0 +1,14 @@
+# source (only publish transpiled js)
+src
+tsconfig-test.json
+tsconfig.json
+tslint.json
+webpack.config.js
+.travis.yml
+.gitignore
+
+# output
+test
+coverage
+.nyc_output
+node_modules

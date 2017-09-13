@@ -8,14 +8,12 @@
 A typed wrapper for Storage implementations (localStorage or sessionStorage) that provides an easy way to store and retrieve nested
 models from browser storage.
 
-Warning: Currently under development. Not production-ready, yet.
-
 ## What it is not
 In some browsers, such as Internet Explorer, it cannot be a drop-in replacement for localStorage or sessionStorage when using
 property- or dictionary-style references (as opposed to .getItem()/.setItem). The specific
 Javascript feature we use for this is the Proxy class. See Mozilla's notes on [browser support for the Proxy class](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Browser_compatibility)), for more information.
 
-Will work:
+Will work (traditional, non-typed storage):
 ```typescript
 localStorage["mykey"] = 653;
 // browser refresh...
@@ -23,7 +21,7 @@ let someValue = localStorage["mykey"];
 // someValue == "314"
 ```
 
-Will also work:
+Will also work (storage using explicit get/set):
 ```typescript
 typedStorage.setItem("mykey", 653);
 // browser refresh...
@@ -31,7 +29,7 @@ let someValue = typedStorage.getItem("mykey");
 // someValue == "314"
 ```
 
-Will only work in modern browsers:
+Will only work in modern browsers (implicit get/set):
 ```typescript
 typedStorage["mykey"] = 653;
 // browser refresh...
@@ -40,15 +38,19 @@ let someValue = typedStorage["mykey"];
 ```
 
 ## Features
-- It implements the Storage interface:
-```typescript
-let s: Storage = localStorage;
-s = sessionStorage;
-s = typedStorage;
-```
-- Allows optional namespacing in the underlying storage provider to avoid key collisions with
+- It implements the Storage interface, so,
+
+    ```typescript
+    let s: Storage = localStorage;
+    s = sessionStorage;
+    s = typedStorage;
+    ```
+
+    all work.
+
+- Provides optional namespacing in the underlying storage provider to avoid key collisions with
   other modules used by your application.
-- Can use either string keys or instances of TypedStorageKey<T> for better type safety.
+- Permits string keys or instances of TypedStorageKey<T> for better type safety.
 
 ## Usage
 
@@ -57,7 +59,6 @@ s = typedStorage;
 let myKey = new TypedStorageKey(MyClass, "myInst");
 let myInst: MyClass = new MyClass();
 typedStorage.setItem(myKey, myInst);
-typedStorage[myKey] = myInst; // property access will only work in modern browsers.
 // localStorage now contains key "com.example.myapp.myInst" with a JSON-serialized representation of myInst.
 
 // ...
@@ -91,11 +92,23 @@ compiled Javascript.
 
 ## Installation
 
-For the moment, you must build from source. I hope to release this, soon.
+`npm install --save-dev typed-storage`
 
 ## Setup
 
-Coming soon.
+```typescript
+import { TypedStorageKey, typedStorageFactory, TypedStorageService } from 'typed-storage';
+import { MyClass } from './somewhere';
+
+let storage = new TypedStorageService();
+
+// Use the factory, if you want to use the Proxy interface
+let storage2 = typedStorageFactory();
+let key = new TypedStorageKey(MyClass, "keyName");
+storage2.setItem(key, myClassInstance);
+
+let retrieved = storage2["keyName"];
+```
 
 ## Options
 ```typescript

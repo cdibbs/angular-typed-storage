@@ -2,12 +2,13 @@ import { TypedStorageKey } from './typed-storage-key';
 import { TypedStorageInfo } from './typed-storage-info';
 import { ITypedStorageService, ILogService, IConfig } from './i';
 import { IMapperService, MapperService } from 'simple-mapper';
+
 import { injectable, inject } from 'inversify';
 import { TypedStorageConfigToken, MapperServiceToken } from './tokens';
 
 export class TypedStorageService implements Storage, ITypedStorageService {
     [x: string]: any;
-    private reserved: string[] = ["models", "getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "mapper", "_config", "formattedKey"];
+    private reserved: string[] = ["models", "getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "mapper", "_config", "formattedKey", "primitives"];
     private get storage(): Storage {
         if (this._config.storage)
             return this._config.storage;
