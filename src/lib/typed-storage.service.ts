@@ -1,7 +1,7 @@
 import { TypedStorageKey } from './typed-storage-key';
 import { TypedStorageInfo } from './typed-storage-info';
-import { ITypedStorageService, ILogService, IConfig } from './i';
-import { IMapperService, MapperService } from 'simple-mapper';
+import { ITypedStorageService, ILogService, IConfig, IMapper } from './i';
+import { MapperService } from 'simple-mapper';
 
 import { injectable, inject } from 'inversify';
 import { TypedStorageConfigToken, MapperServiceToken } from './tokens';
@@ -18,12 +18,12 @@ export class TypedStorageService implements Storage, ITypedStorageService {
         
         throw new Error("No storage provider configured, and localStorage not defined.");
     }
-    private get models(): { [key: string]: any } { return this._config.models || {} }
+    
     private primitives: { [key: string]: Function } = {};
 
     constructor(
         protected _config: IConfig = {},
-        protected mapper: IMapperService = new MapperService())
+        protected mapper: IMapper = new MapperService())
     {
         this.primitives["Number"] = (i: string) => JSON.parse(i);
         this.primitives["Date"] = (i: string) => new Date(i);
@@ -53,9 +53,6 @@ export class TypedStorageService implements Storage, ITypedStorageService {
             typedKey = key;
             type = typedKey.type;
             typeName = typedKey.typeName;
-        } else if (this.models[info.viewModelName]) {
-            type = this.models[info.viewModelName];
-            typeName = type.name;
         } else {
             return info.viewModel;
         }

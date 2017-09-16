@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.1.0] - 2017-09-16
+### Added
+- Exported mapper interface to facilitate customization of model (de)serialization.
+
+### Changed
+- Updated documentation to better reflect features.
+
+### Removed
+- Removed tight coupling to internal mapper library.
+
 ## [2.0.0] - 2017-09-13
 ### Added
 - CHANGELOG.md :-)
