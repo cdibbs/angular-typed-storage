@@ -6,8 +6,8 @@
 
 # TypedStorage
 
-A typed wrapper for Storage implementations (localStorage or sessionStorage) that provides an easy way to store and retrieve nested
-models from browser storage.
+A typed wrapper for Storage implementations (local or session) that provides an easy way to store and retrieve nested
+models.
 
   * [Features](#features)
   * [What it is not (anti-features)](#what-it-is-not--anti-features-)
@@ -37,9 +37,9 @@ models from browser storage.
 
 While getItem and setItem are available in all browsers, dictionary-style references
 are unavailable in Internet Explorer (but not Edge), for example. In such browsers,
-typedStorage be a drop-in replacement for localStorage or sessionStorage. The specific
-browser feature needed is the Proxy class. See Mozilla's notes on
-[browser support for the Proxy class][1], for more information.
+typedStorage cannot be a drop-in replacement for localStorage or sessionStorage, which
+allow such references. The specific browser feature needed is the Proxy class.
+See Mozilla's notes on [browser support for the Proxy class][1], for more information.
 
 ### What works in all browsers
 
@@ -183,4 +183,4 @@ Then run 'npm run compodoc-serve' to see auto-generated documentation and docume
 
 Feel free to post issues.
 
-[1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Browser_compatibility)
+[1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy#Browser_compatibility
