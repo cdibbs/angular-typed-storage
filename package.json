@@ -19,7 +19,8 @@
   "license": "MIT",
   "scripts": {
     "pretest": "tsc --project tsconfig-test.json",
-    "test": "alsatian test/lib/*.spec.js --tap",
+    "test": "alsatian test/lib/*.spec.js",
+    "ttest": "alsatian test/lib/*.spec.js --tap",
     "cover": "nyc npm test",
     "compodoc": "compodoc -p tsconfig.json",
     "e2e": "",
