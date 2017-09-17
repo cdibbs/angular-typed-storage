@@ -1,6 +1,5 @@
 /* tslint:disable:no-unused-variable */
 import { Expect, Test, TestFixture, TestCase, SpyOn, Setup, Teardown } from 'alsatian';
-import { IMapperService, MapperService } from 'simple-mapper';
 
 import { MockStorage } from '../spec-lib/mock.storage';
 import { typedStorageFactory } from './typed-storage-factory';
@@ -11,73 +10,70 @@ import { IConfig } from './i';
 export class TypedStorageFactoryTests {
   @Test("runs")
   public runs() {
-    Expect(typedStorageFactory({}, new MapperService())).toBeDefined();
+    Expect(typedStorageFactory()).toBeDefined();
   }
-}
 
-/*describe('TypedStorageFactory', () => {
-  beforeEach(() => {
-    let config = <IConfig>{
-        logger: console,
-        viewModels: []
-    };
-    TestBed.configureTestingModule({
-        imports: [
-            SimpleMapperModule.forRoot({viewModels: []})
-        ],
-        providers: [
-        ]
-    });
-  });
-
-  it('should pass prop set through to setItem.', inject([MapperService], (mapper: IMapperService) => {
+  @Test("should pass prop set through to setItem.")
+  public setItemPassesThru(): void {
     let o = {};
-    let s = typedStorageFactory({ storage: new MockStorage(o) }, mapper);
+    let s = typedStorageFactory({ storage: new MockStorage(o) });
     s["one"] = "two";
-    expect(s.getItem("one")).toBe("two");
-  }));
-  it('should pass prop access through to getItem.', inject([MapperService], (mapper: IMapperService) => {
+    Expect(s.getItem("one")).toBe("two");
+  }
+
+  @Test("should pass prop access through to getItem.")
+  public getItemPassesThru(): void {
     let o = {};
-    let s = typedStorageFactory({ storage: new MockStorage(o) }, mapper);
+    let s = typedStorageFactory({ storage: new MockStorage(o) });
     s.setItem("one", "two");
-    expect(s["one"]).toBe(s.getItem("one"));
-    expect(s.getItem("one")).toBe("two");
-  }));
-  it('should pass prop access through to typedStorage instance when unrecognized key type (browser internals).', inject([MapperService], (mapper: IMapperService) => {
+    Expect(s["one"]).toBe(s.getItem("one"));
+    Expect(s.getItem("one")).toBe("two");
+  }
+
+  @Test('should pass prop access through to typedStorage instance when unrecognized key type (browser internals).')
+  public shouldPassPropWhenUnrecogKeyType() {
     let sym = Symbol("foo");
     let o = { sym: "two" };
-    let s = typedStorageFactory({ storage: new MockStorage(o) }, mapper);
-    expect(s[sym]).toBeUndefined();
-  }));
-  it('should pass prop delete through to removeItem.', inject([MapperService], (mapper: IMapperService) => {
+    let s = typedStorageFactory({ storage: new MockStorage(o) });
+    Expect(s[sym]).not.toBeDefined();
+  }
+
+  @Test('should pass prop delete through to removeItem.')
+  public shouldPassDeleteToRemoveItem() {
     let o = {};
-    let s = typedStorageFactory({ storage: new MockStorage(o) }, mapper);
+    let s = typedStorageFactory({ storage: new MockStorage(o) }, undefined);
     s.setItem("one", "two");
-    expect(s["one"]).toBe(s.getItem("one"));
+    Expect(s["one"]).toBe(s.getItem("one"));
     delete s["one"];
-    expect(s.getItem("one")).toBe(null);
-  }));
-  it('absense of Proxy class generates warning.', inject([MapperService], (mapper: IMapperService) => {
+    Expect(s.getItem("one")).toBe(null);
+  }
+
+  @Test('absense of Proxy class should generate warning.')
+  public noProxyClassShouldWarn() {
     let o = {};
     let called = false;
     let l = { warn: function() { called = true; }, log: function() {}, info: function() {}, error: function() {}}
-    let s = typedStorageFactory({ storage: new MockStorage(o), logger: l }, mapper, null);
-    expect(called).toBe(true);
-  }));
-  it('absense of Proxy class but proxy off generates no warning.', inject([MapperService], (mapper: IMapperService) => {
+    let s = typedStorageFactory({ storage: new MockStorage(o), logger: l }, undefined, null);
+    Expect(called).toBe(true);
+  }
+
+  @Test('absense of Proxy class but noProxy on quiets warning.')
+  public noProxyClassPreferenceNoWarn() {
     let o = {};
     let called = false;
     let l = { warn: function() { called = true; }, log: function() {}, info: function() {}, error: function() {}}
-    let s = typedStorageFactory({ storage: new MockStorage(o), logger: l, noProxy: true }, mapper, null);
-    expect(called).toBe(false);
-  }));
-  it('absense of Proxy class generates usable typedStorage with no proxying.', inject([MapperService], (mapper: IMapperService) => {
+    let s = typedStorageFactory({ storage: new MockStorage(o), logger: l, noProxy: true }, undefined, null);
+    Expect(called).toBe(false);
+  }
+
+  @Test('absense of Proxy class still results in usable TypedStorage.')
+  public noProxyUsableTypedStorage() {
     let o = {};
-    let s = typedStorageFactory({ storage: new MockStorage(o), noProxy: true }, mapper, null);
+    let s = typedStorageFactory({ storage: new MockStorage(o), noProxy: true }, undefined, null);
     s.setItem("one", 1);
     s["two"] = 2;
-    expect(s.getItem("one")).toBe(1);
-    expect(s["one"]).toBeUndefined();
-    expect(s.getItem("two")).toBe(null);
-  }));
-});*/
+    Expect(s.getItem<Number>("one")).toBe(1);
+    Expect(s["one"]).not.toBeDefined();
+    Expect(s.getItem("two")).toBe(null);
+  }
+}

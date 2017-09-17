@@ -11,6 +11,7 @@ import { IConfig, ITypedStorageService } from './i';
 
 @TestFixture("TypedStorageService")
 export class TypedStorageServiceTests {
+    readonly reserved = ["models", "getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "mapper", "_config", "formattedKey", "primitives", "defaultStorage"];
     tss: ITypedStorageService;
     rawStore: { [key: string]: any };
 
@@ -45,42 +46,46 @@ export class TypedStorageServiceTests {
         Expect(t["mapper"] instanceof MapperService).toBeTruthy();
     }
 
-    @Test("Should use localStorage by default or throw.")
-    public shouldUseLocalStorageDefaultOrThrow() {
-        if (typeof localStorage !== "undefined") {
-            Expect(new TypedStorageService()["storage"]).toBe(localStorage);
-        } else {
-            try {
-                new TypedStorageService()["storage"];
-                Expect(false).toBe(true);
-            } catch(ex) {
-                Expect(ex).toBeDefined();
-            }
-        }
+    @Test("Should use localStorage by default.")
+    public shouldUseLocalStorageDefault() {
+        let ts = new TypedStorageService({}, undefined, <any>"test storage");
+        Expect(ts["storage"]).toBe(<any>"test storage");
     }
 
-    @Test("Should use empty models by default.")
-    public shouldUseEmptyModelsDefault() {
-        Expect(new TypedStorageService()["models"]).toEqual({});
+    @Test("Should use configured storage over local.")
+    public shouldUseConfiguredStorage() {
+        let tss = new TypedStorageService({ storage: <any>"my own" });
+        tss["defaultStorage"] = <any>"test storage";
+        Expect(tss["storage"]).toBe(<any>"my own");
+    }
+
+    @Test("Should throw if no localStorage or configured storage.")
+    public shouldThrowOnNoAvailableStorage() {
+        try {
+            let tss = new TypedStorageService();
+            tss["defaultStorage"] = undefined;
+            tss["storage"];
+            Expect(false).toBe(true);
+        } catch(ex) {
+            Expect(ex).toBeDefined();
+        }
     }
 
     @Test("Should prevent setting reserved words.")
     public shouldRejectReservedSets() {
-        let reserved = ["models", "getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "mapper", "_config", "formattedKey", "primitives"];
-        for (var i = 0; i < reserved.length; i++) {
-            let orig = this.tss.getItem<any>(reserved[i]);
-            this.tss.setItem(reserved[i], "3.14");
-            Expect(this.tss.getItem<any>(reserved[i])).toBe(orig);
+        for (var i = 0; i < this.reserved.length; i++) {
+            let orig = this.tss.getItem<any>(this.reserved[i]);
+            this.tss.setItem(this.reserved[i], "3.14");
+            Expect(this.tss.getItem<any>(this.reserved[i])).toBe(orig);
         }
     }
 
     @Test("Should prevent removing reserved words.")
     public shouldRejectReservedRemoves() {
-        let reserved = ["getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "models", "mapper", "_config", "formattedKey", "primitives"];
-        for (var i = 0; i < reserved.length; i++) {
-            let orig = this.tss.getItem<any>(reserved[i]);
-            this.tss.removeItem(reserved[i]);
-            Expect(this.tss.getItem<any>(reserved[i])).toBe(orig);
+        for (var i = 0; i < this.reserved.length; i++) {
+            let orig = this.tss.getItem<any>(this.reserved[i]);
+            this.tss.removeItem(this.reserved[i]);
+            Expect(this.tss.getItem<any>(this.reserved[i])).toBe(orig);
         }
     }
 
@@ -102,11 +107,10 @@ export class TypedStorageServiceTests {
 
     @Test("Should prevent clearing reserved words.")
     public shouldRejectReservedClears() {
-        let reserved = ["getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "models", "mapper", "_config", "formattedKey", "primitives"];
-        for (var i = 0; i < reserved.length; i++) {
-            let orig = this.tss.getItem<any>(reserved[i]);
+        for (var i = 0; i < this.reserved.length; i++) {
+            let orig = this.tss.getItem<any>(this.reserved[i]);
             this.tss.clear();
-            Expect(this.tss.getItem<any>(reserved[i])).toBe(orig);
+            Expect(this.tss.getItem<any>(this.reserved[i])).toBe(orig);
         }
     }
 

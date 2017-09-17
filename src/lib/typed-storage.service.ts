@@ -8,13 +8,15 @@ import { TypedStorageConfigToken, MapperServiceToken } from './tokens';
 
 export class TypedStorageService implements Storage, ITypedStorageService {
     [x: string]: any;
-    private reserved: string[] = ["models", "getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved", "storage", "mapper", "_config", "formattedKey", "primitives"];
+    private defaultStorage: Storage;
+    private reserved: string[] = ["models", "getItem", "setItem", "length", "namespace", "removeItem", "key", "clear", "reserved",
+        "storage", "mapper", "_config", "formattedKey", "primitives", "defaultStorage"];
     private get storage(): Storage {
         if (this._config.storage)
             return this._config.storage;
 
-        if (typeof localStorage !== "undefined")
-            return localStorage;
+        if (typeof this.defaultStorage !== "undefined")
+            return this.defaultStorage;
         
         throw new Error("No storage provider configured, and localStorage not defined.");
     }
@@ -23,8 +25,11 @@ export class TypedStorageService implements Storage, ITypedStorageService {
 
     constructor(
         protected _config: IConfig = {},
-        protected mapper: IMapper = new MapperService())
+        protected mapper: IMapper = new MapperService(),
+        protected _internalDefaultStorage: Storage = typeof localStorage === "undefined" ? undefined : localStorage)
     {
+        if (typeof _internalDefaultStorage !== "undefined")
+            this.defaultStorage = _internalDefaultStorage;
         this.primitives["Number"] = (i: string) => JSON.parse(i);
         this.primitives["Date"] = (i: string) => new Date(i);
         this.primitives["String"] = (i: string) => i;

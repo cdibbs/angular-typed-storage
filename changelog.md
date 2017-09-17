@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.1.1] - 2017-09-17
+### Added
+- Re-added typedStorageFactory unit test coverage following conversion to [Alsatian].
+- Added source-map-support for coverage (oops).
+
+### Updated
+- fixed minor typoes in documentation.
+- Minor improvements in coverage.
+
 ## [2.1.0] - 2017-09-16
 ### Added
 - Exported mapper interface to facilitate customization of model (de)serialization.
