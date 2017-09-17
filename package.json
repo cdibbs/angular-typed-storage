@@ -27,6 +27,7 @@
     "build": "npm-run-all tsc webpack",
     "webpack": "webpack",
     "tsc": "tsc",
+    "tslint": "tslint --project tslint.json",
     "prepublishOnly": "npm run build",
     "report_coverage": "nyc report --reporter=lcov && codecov"
   },

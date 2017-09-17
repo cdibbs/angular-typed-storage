@@ -17,13 +17,13 @@ export class MockStorage implements Storage {
     public get length(): number {
         return Object.keys(this.s).length;
     }
- 
+
     public key(n: number): string {
         return Object.keys(this.s)[n];
     }
 
     public clear(): void {
-        for (var k of Object.keys(this.s)) {
+        for (const k of Object.keys(this.s)) {
             delete this.s[k];
         }
     }

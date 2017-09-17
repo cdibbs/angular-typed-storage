@@ -1,5 +1,4 @@
 export class TypedStorageInfo<T> {
-    viewModelName: string = "";
-
-    viewModel: T = null;
+    public viewModelName: string = "";
+    public viewModel: T = null;
 }

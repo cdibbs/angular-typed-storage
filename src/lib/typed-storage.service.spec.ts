@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { IMapperService, IConfig as IMapperConfig, MapperService, mappable } from 'simple-mapper';
 import { MockStorage } from '../spec-lib/mock.storage';
-import { TypedStorageConfigToken } from './tokens';
 import { TypedStorageService } from './typed-storage.service';
 import { TypedStorageKey } from './typed-storage-key';
 import { IConfig, ITypedStorageService } from './i';

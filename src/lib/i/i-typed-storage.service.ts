@@ -1,4 +1,4 @@
-import { TypedStorageKey } from '../typed-storage-key';
+import { TypedStorageKey } from "../typed-storage-key";
 
 export interface ITypedStorageService extends Storage {
     /** The namespace to use in the underlying storage provider. */
