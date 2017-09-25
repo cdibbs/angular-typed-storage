@@ -1,12 +1,12 @@
-import { IMapperService, MapperService } from "simple-mapper";
+import { MapperService } from "simple-mapper";
 
 import { TypedStorageService } from "./typed-storage.service";
 import { TypedStorageInfo } from "./typed-storage-info";
-import { IConfig, ILogService, ITypedStorageService } from "./i";
+import { IConfig, ILogService, ITypedStorageService, IMapper } from "./i";
 
 export function typedStorageFactory(
     config: IConfig = {},
-    mapper: IMapperService = null,
+    mapper: IMapper = null,
     proxyClass?: typeof Proxy
 ): ITypedStorageService {
     if (proxyClass === undefined && typeof Proxy !== "undefined") {

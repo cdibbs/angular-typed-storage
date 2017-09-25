@@ -34,9 +34,7 @@
   "typings": "./dist/index.d.ts",
   "private": false,
   "dependencies": {},
-  "optionalDependencies": {
-    "simple-mapper": "^2.0.0"
-  },
+  "optionalDependencies": {},
   "devDependencies": {
     "@compodoc/compodoc": "latest",
     "@types/jasmine": "^2.5.47",
@@ -53,7 +51,7 @@
     "protractor": "~5.1.0",
     "rxjs": "^5.1.0",
     "shelljs": "0.7.7",
-    "simple-mapper": "^2.0.0",
+    "simple-mapper": "^2.1.0",
     "sorcery": "^0.10.0",
     "source-map-support": "^0.4.18",
     "tslint": "^5.1.0",

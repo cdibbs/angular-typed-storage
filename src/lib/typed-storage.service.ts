@@ -15,8 +15,8 @@ export class TypedStorageService implements Storage, ITypedStorageService {
             return this._config.storage;
         }
 
-        if (typeof this.defaultStorage !== "undefined") {
-            return this.defaultStorage;
+        if (typeof localStorage !== "undefined") {
+            return localStorage;
         }
 
         throw new Error("No storage provider configured, and localStorage not defined.");
@@ -26,12 +26,8 @@ export class TypedStorageService implements Storage, ITypedStorageService {
 
     constructor(
         protected _config: IConfig = {},
-        protected mapper: IMapper = new MapperService(),
-        protected _internalDefaultStorage: Storage = typeof localStorage === "undefined" ? undefined : localStorage
+        protected mapper: IMapper = new MapperService()
     ) {
-        if (typeof _internalDefaultStorage !== "undefined") {
-            this.defaultStorage = _internalDefaultStorage;
-        }
         this.primitives.Number = (i: string) => JSON.parse(i);
         this.primitives.Date = (i: string) => new Date(i);
         this.primitives.String = (i: string) => i;

@@ -45,12 +45,6 @@ export class TypedStorageServiceTests {
         Expect(t["mapper"] instanceof MapperService).toBeTruthy();
     }
 
-    @Test("Should use localStorage by default.")
-    public shouldUseLocalStorageDefault() {
-        let ts = new TypedStorageService({}, undefined, <any>"test storage");
-        Expect(ts["storage"]).toBe(<any>"test storage");
-    }
-
     @Test("Should use configured storage over local.")
     public shouldUseConfiguredStorage() {
         let tss = new TypedStorageService({ storage: <any>"my own" });
@@ -62,11 +56,22 @@ export class TypedStorageServiceTests {
     public shouldThrowOnNoAvailableStorage() {
         try {
             let tss = new TypedStorageService();
-            tss["defaultStorage"] = undefined;
             tss["storage"];
-            Expect(false).toBe(true);
         } catch(ex) {
             Expect(ex).toBeDefined();
+        }
+    }
+
+    @Test("Should use localStorage by default, if available.")
+    public shouldUseLocalStorageByDefault() {
+        let orig = global["localStorage"];
+        try {
+            global["localStorage"] = <any>{};
+            let tss = require('./typed-storage.service').TypedStorageService;
+            let t = new tss();
+            Expect(t["storage"]).toBe(localStorage);
+        } finally {
+            global["localStorage"] = orig;
         }
     }
 

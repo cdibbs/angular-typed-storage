@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.1.2] - 2017-09-25
+### Added
+- Completed test coverage. Now at 100%.
+
+### Updated
+- Updated default mapper to SimpleMapper 2.1.0.
+
+### Removed
+- Removed unnecessary configuration parameter in typed storage class.
+
 ## [2.1.1] - 2017-09-17
 ### Added
 - Re-added typedStorageFactory unit test coverage following conversion to [Alsatian].

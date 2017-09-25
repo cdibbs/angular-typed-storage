@@ -76,4 +76,19 @@ export class TypedStorageFactoryTests {
     Expect(s["one"]).not.toBeDefined();
     Expect(s.getItem("two")).toBe(null);
   }
+
+  @Test('should use configured mapper over internal, when provided.')
+  public shouldUseConfigMapper() {
+    let mapper = {
+      map: () => {}
+    };
+    let o = {};
+    SpyOn(mapper, "map").andReturn( { viewModel: 42 });
+    let ts = typedStorageFactory({ storage: new MockStorage(o) }, <any>mapper);
+    ts.setItem('one', {});
+    let result = ts.getItem('one');
+
+    Expect(mapper.map).toHaveBeenCalled();
+    Expect(result).toBe(42)
+  }
 }
