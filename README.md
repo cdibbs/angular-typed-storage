@@ -4,6 +4,26 @@
 [![devDependencies Status](https://david-dm.org/cdibbs/angular-typed-storage/dev-status.svg)](https://david-dm.org/cdibbs/angular-typed-storage?type=dev)
 [![codecov](https://codecov.io/gh/cdibbs/angular-typed-storage/branch/master/graph/badge.svg)](https://codecov.io/gh/cdibbs/angular-typed-storage)
 
+# [Deprecated]
+It was unnecessarily heavy and restrictive to wrap this library up as an Angular module. Please use
+the unwrapped version, here: [typed-storage](https://github.com/ossplz/typed-storage).
+
+## New Usage
+
+With Angular's dependency injection, the new usage looks like this:
+``` typescript
+import { TypedStorageService, typedStorageFactory, TypedStorageKey } from 'typed-storage';
+
+@NgModule({
+  // ...
+  providers: [
+    <FactoryProvider>{ provide: TypedStorageService, useFactory: typedStorageFactory },
+    // ...
+  ]
+})
+export class AppModule {
+```
+
 # TypedStorage
 The Angular 2 & 4 TypedStorage module provides an easy way to store and retrieve nested
 view models from browser storage (either localStorage or sessionStorage).
