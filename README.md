@@ -6,8 +6,21 @@
 
 # TypedStorage
 
-A typed wrapper for Storage implementations (local or session) that provides an easy way to store and retrieve nested
-models.
+A typed wrapper for Storage implementations (local or session) that provides an easy way to store and retrieve nested models.
+
+## Basic Usage
+
+``` typescript
+let myKey = new TypedStorageKey(MyClass, "myKey"); // typed
+let myClassInstance: MyClass = new MyClass();
+typedStorage.setItem(myKey, myClassInstance);
+
+// ... browser refresh ...
+
+let myRetrievedInstance = typedStorage.getItem(myKey);
+```
+
+## Details
 
   * [Features](#features)
   * [What it is not (anti-features)](#what-it-is-not--anti-features-)
