@@ -1,8 +1,8 @@
 [![npm version](https://badge.fury.io/js/typed-storage.svg)](https://badge.fury.io/js/typed-storage)
-[![Build Status](https://travis-ci.org/cdibbs/typed-storage.svg?branch=master)](https://travis-ci.org/cdibbs/typed-storage)
-[![dependencies Status](https://david-dm.org/cdibbs/typed-storage/status.svg)](https://david-dm.org/cdibbs/typed-storage)
-[![devDependencies Status](https://david-dm.org/cdibbs/typed-storage/dev-status.svg)](https://david-dm.org/cdibbs/typed-storage?type=dev)
-[![codecov](https://codecov.io/gh/cdibbs/typed-storage/branch/master/graph/badge.svg)](https://codecov.io/gh/cdibbs/typed-storage)
+[![Build Status](https://travis-ci.org/ossplz/typed-storage.svg?branch=master)](https://travis-ci.org/ossplz/typed-storage)
+[![dependencies Status](https://david-dm.org/ossplz/typed-storage/status.svg)](https://david-dm.org/ossplz/typed-storage)
+[![devDependencies Status](https://david-dm.org/ossplz/typed-storage/dev-status.svg)](https://david-dm.org/ossplz/typed-storage?type=dev)
+[![codecov](https://codecov.io/gh/ossplz/typed-storage/branch/master/graph/badge.svg)](https://codecov.io/gh/ossplz/typed-storage)
 
 # TypedStorage
 
