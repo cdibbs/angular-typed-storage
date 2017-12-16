@@ -6,13 +6,13 @@
 
 # TypedStorage
 
-A typed wrapper for Storage implementations (local or session) that provides an easy way to store and retrieve nested models.
+A wrapper for Storage implementations (local or session) that provides an easy way to store and retrieve strongly-typed, nested models.
 
 ## Basic Usage
 
 ``` typescript
 let myKey = new TypedStorageKey(MyClass, "myKey"); // typed
-let myClassInstance: MyClass = new MyClass();
+let myClassInstance: MyClass = someFactory();
 typedStorage.setItem(myKey, myClassInstance);
 
 // ... browser refresh ...
@@ -20,38 +20,23 @@ typedStorage.setItem(myKey, myClassInstance);
 let myRetrievedInstance = typedStorage.getItem(myKey);
 ```
 
-## Details
-
-  * [Features](#features)
-  * [What it is not (anti-features)](#what-it-is-not--anti-features-)
-    + [What works in all browsers](#what-works-in-all-browsers)
-    + [What works only in browsers that implement the Proxy class](#what-works-only-in-browsers-that-implement-the-proxy-class)
-  * [Model Mapping](#model-mapping)
-    + [Custom Model Mapper](#custom-model-mapper)
-  * [Installation](#installation)
-  * [Setup and Options](#setup-and-options)
-  * [Building from source and contributing](#building-from-source-and-contributing)
-    + [Build](#build)
-    + [Running unit tests](#running-unit-tests)
-    + [Code coverage](#code-coverage)
-    + [Documentation](#documentation)
-  * [Further help](#further-help)
-
 ## Features
 
 - Optionally namespaced storage keys
-  - When so configured, `ts.getItem("myKey")` can translate to `storage.getItem("com.example.myKey");`
+  - When so configured, `ts.getItem(aKey)` can translate to `storage.getItem("com.example.myPrimKey");`
 - Implements the Storage interface, so the API is a superset of browser storage
 - Deserializes nested models via a configurable mapper
   - We use SimpleMapper for mapping, but you are free to [provide your own mapper](#custom-model-mapper) implementation during initialization.
-- Understands native types: `ts.setItem("now", new Date())` followed by `ts.getItem("now")` will retrieve a Date object.
+- Understands native types: `ts.setItem("loggedIn", new Date())` followed by `ts.getItem("loggedIn")` will retrieve a Date object.
 
 ## What it is not (anti-features)
 
-While getItem and setItem are available in all browsers, dictionary-style references
-are unavailable in Internet Explorer (but not Edge), for example. In such browsers,
+While getItem and setItem are available in all browsers, dictionary-style references, like `typedStorage['key']`,
+are unavailable in some older browsers such as Internet Explorer (but not Edge), for example. In such browsers,
 typedStorage cannot be a drop-in replacement for localStorage or sessionStorage, which
-allow such references. The specific browser feature needed is the Proxy class.
+allow such references.
+
+The specific browser feature we use is the Proxy class.
 See Mozilla's notes on [browser support for the Proxy class][1], for more information.
 
 ### What works in all browsers
@@ -73,7 +58,7 @@ typedStorage.clear();
 typedStorage.removeItem(myKey); // redundant after clear()
 ```
 
-### What works only in browsers that implement the Proxy class
+### What works in [browsers that implement the Proxy class][1]
 
 ```typescript
 typedStorage["mykey"] = 653;
@@ -87,9 +72,10 @@ let someValue = typedStorage["mykey"];
 ## Model Mapping
 
 We use [SimpleMapper](https://github.com/cdibbs/simple-mapper) to recursively map deserialized objects back
-into their original models. Nested models that you want mapped should use SimpleMapper's @mappable attribute.
+into their original models. Nested models should use SimpleMapper's @mappable attribute, if you want them to be
+recursively mapped.
 
-You can also implement IMapper.map and supply your own (or wrap a 3rd-party mapper library).
+You can also implement the `map()` method on the `IMapper` interface ([below](#custom-model-mapper)) to supply your own Or, you can wrap a 3rd-party mapper library.
 
 ```typescript 
 export class MyWidget {
@@ -104,13 +90,12 @@ export class MyWidget {
 }
 ```
 
-*Note:* Each property must have a default value, otherwise SimpleMapper will not be able to detect the property at run-time. The Typescript,
-`Id: number;` (with no default value) compiles to return Javascript's `undefined` at run-time. Not even the property key will exist in the
-compiled Javascript.
+Each destination property must have a default value, otherwise SimpleMapper will not be able to detect the property at run-time. The Typescript,
+`Id: number;` (with no default value) compiles to return Javascript's `undefined` at run-time. In that case, not even the property key would exist in the compiled Javascript.
 
 ### Custom Model Mapper
 
-To implement a custom model mapper, you only need to implement IMapper and supply that during configuration.
+If you are going to implement a custom model mapper, you only need to implement IMapper and supply that during configuration.
 
 ```typescript
 export interface IMapper {
@@ -155,15 +140,18 @@ let config: IConfig = {
 let storage = typedStorageFactory(config);
 ```
 
-And in your classes, import like this:
+And in your classes, use it like this:
 
 ```typescript
+import { injectable, inject } from 'inversify';
 import { TypedStorageService, TypedStorageKey } from 'typed-storage';
+import TYPES from '../di/types';
 
+@injectable()
 export class MyService {
   private userKey: TypedStorageKey<UserViewModel> = new TypedStorageKey(UserViewModel, "user");
 
-  constructor(private typedStorage: TypedStorageService) {
+  constructor(@inject(TYPES.Storage) private typedStorage: TypedStorageService) {
   // ...
   }
 
@@ -174,6 +162,8 @@ export class MyService {
 ```
 
 ## Building from source and contributing
+
+Contributions are welcome. Please follow good code quality conventions.
 
 ### Build
 
