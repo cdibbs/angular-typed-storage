@@ -3,10 +3,9 @@
 [![dependencies Status](https://david-dm.org/ossplz/typed-storage/status.svg)](https://david-dm.org/ossplz/typed-storage)
 [![devDependencies Status](https://david-dm.org/ossplz/typed-storage/dev-status.svg)](https://david-dm.org/ossplz/typed-storage?type=dev)
 [![codecov](https://codecov.io/gh/ossplz/typed-storage/branch/master/graph/badge.svg)](https://codecov.io/gh/ossplz/typed-storage)
+[![Greenkeeper badge](https://badges.greenkeeper.io/ossplz/typed-storage.svg)](https://greenkeeper.io/)
 
 # TypedStorage
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/ossplz/typed-storage.svg)](https://greenkeeper.io/)
 
 A wrapper for Storage implementations (local or session) that provides an easy way to store and retrieve strongly-typed, nested models.
 
