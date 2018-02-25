@@ -6,6 +6,8 @@
 
 # TypedStorage
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ossplz/typed-storage.svg)](https://greenkeeper.io/)
+
 A wrapper for Storage implementations (local or session) that provides an easy way to store and retrieve strongly-typed, nested models.
 
 ## Basic Usage
