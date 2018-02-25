@@ -48,7 +48,7 @@ export class TypedStorageService implements Storage, ITypedStorageService {
         }
 
         const stored: any = JSON.parse(json);
-        const info: TypedStorageInfo<T> = this.mapper.map(TypedStorageInfo, stored);
+        const info: TypedStorageInfo<T> = this.mapper.map<TypedStorageInfo<T>>(TypedStorageInfo, stored);
         let type: { new(): T };
         let typedKey: TypedStorageKey<T>;
         let typeName: string;
