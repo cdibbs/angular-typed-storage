@@ -50,7 +50,7 @@
     "nyc": "^11.2.1",
     "protractor": "^5.2.0",
     "rxjs": "^5.1.0",
-    "shelljs": "0.8.1",
+    "shelljs": "0.8.2",
     "simple-mapper": "^2.1.0",
     "sorcery": "^0.10.0",
     "source-map-support": "^0.5.0",
