@@ -39,3 +39,4 @@ dist/*
 
 # Coverage
 coverage/*
+test
