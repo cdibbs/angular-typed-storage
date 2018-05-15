@@ -1,6 +1,6 @@
 {
   "name": "typed-storage",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "A wrapper library for *Storage implementations that facilitates storing typed objects",
   "repository": {
     "type": "git",
