@@ -27,7 +27,7 @@ export function typedStorageFactory(
             get(target, prop, receiver) {
                 const v: any = prop.valueOf();
                 if (typeof v !== "string" && !(v instanceof TypedStorageInfo)) {
-                    return target[prop];
+                    return target[<any>prop];
                 }
                 return target.getItem(prop.toString());
             },

@@ -35,7 +35,7 @@ export class TypedStorageFactoryTests {
     let sym = Symbol("foo");
     let o = { sym: "two" };
     let s = typedStorageFactory({ storage: new MockStorage(o) });
-    Expect(s[sym]).not.toBeDefined();
+    Expect(s[<any>sym]).not.toBeDefined();
   }
 
   @Test('should pass prop delete through to removeItem.')

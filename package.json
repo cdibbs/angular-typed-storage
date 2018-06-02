@@ -1,6 +1,6 @@
 {
   "name": "typed-storage",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "A wrapper library for *Storage implementations that facilitates storing typed objects",
   "repository": {
     "type": "git",
@@ -55,7 +55,7 @@
     "sorcery": "^0.10.0",
     "source-map-support": "^0.5.6",
     "tslint": "^5.10.0",
-    "typescript": "^2.8.3",
+    "typescript": "^2.9.1",
     "webpack": "^4.0.0",
     "webpack-cli": "^3.0.0",
     "zone.js": "^0.8.26"
