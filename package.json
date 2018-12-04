@@ -37,7 +37,7 @@
   "optionalDependencies": {},
   "devDependencies": {
     "@compodoc/compodoc": "latest",
-    "@types/jasmine": "^2.8.7",
+    "@types/jasmine": "^3.3.1",
     "@types/node": "^10.0.3",
     "alsatian": "^2.2.1",
     "chalk": "2.4.0",
