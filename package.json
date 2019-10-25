@@ -43,7 +43,7 @@
     "chalk": "2.4.0",
     "codecov": "^3.0.2",
     "compodoc": "0.0.41",
-    "core-js": "^2.5.6",
+    "core-js": "^3.3.4",
     "cross-env": "^5.1.5",
     "inversify": "^4.13.0",
     "npm-run-all": "^4.1.3",
