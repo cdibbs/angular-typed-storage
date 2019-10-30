@@ -38,7 +38,7 @@
   "devDependencies": {
     "@compodoc/compodoc": "latest",
     "@types/jasmine": "^2.8.7",
-    "@types/node": "^10.0.3",
+    "@types/node": "^12.12.1",
     "alsatian": "^2.2.1",
     "chalk": "2.4.0",
     "codecov": "^3.0.2",
