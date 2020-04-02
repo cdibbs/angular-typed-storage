@@ -40,7 +40,7 @@
     "@types/jasmine": "^2.8.7",
     "@types/node": "^10.0.3",
     "alsatian": "^2.2.1",
-    "chalk": "2.4.0",
+    "chalk": "4.0.0",
     "codecov": "^3.0.2",
     "compodoc": "0.0.41",
     "core-js": "^2.5.6",
